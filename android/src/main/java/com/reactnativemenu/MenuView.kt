@@ -32,17 +32,20 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
         prepareMenu()
       }
 
-      override fun onSingleTapUp(e: MotionEvent): Boolean {
-        if (!mIsOnLongPress) {
-          prepareMenu()
-        }
+      override fun onSingleTapUp(e: MotionEvent?): Boolean {
         return true
       }
     })
   }
 
   override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-    return true
+    if (mIsOnLongPress) {
+      ev?.let {
+        onTouchEvent(it)
+      }
+      return true
+    }
+    return false
   }
 
   override fun onTouchEvent(ev: MotionEvent): Boolean {
